@@ -1,84 +1,200 @@
 
-import React, {Component} from 'react';
-import {StyleSheet, View, StatusBar, Modal, AsyncStorage} from 'react-native';
-import { Container, Text, Content, Form, Item, Input, Button, Spinner, Toast, Root} from 'native-base'
+import React, { Component } from 'react';
+import { StyleSheet, View, StatusBar, Dimensions, AsyncStorage, TextInput } from 'react-native';
+import { Container, Text, Content, Form, Item, Input, Button, Spinner, Toast, Root } from 'native-base'
 import Icon from 'react-native-vector-icons/Ionicons'
+import Animated, { Easing } from 'react-native-reanimated';
+import { TapGestureHandler, State } from 'react-native-gesture-handler';
+import Svg, { Image, Circle, ClipPath } from 'react-native-svg';
 
+const { height, width } = Dimensions.get('window');
+
+const {
+    Value,
+    event,
+    block,
+    cond,
+    eq,
+    set,
+    Clock,
+    startClock,
+    stopClock,
+    debug,
+    timing,
+    clockRunning,
+    interpolate,
+    Extrapolate,
+    concat
+} = Animated;
+
+function runTiming(clock, value, dest) {
+    const state = {
+        finished: new Value(0),
+        position: new Value(0),
+        time: new Value(0),
+        frameTime: new Value(0)
+    };
+
+    const config = {
+        duration: 1000,
+        toValue: new Value(0),
+        easing: Easing.inOut(Easing.ease)
+    };
+
+    return block([
+        cond(clockRunning(clock), 0, [
+            set(state.finished, 0),
+            set(state.time, 0),
+            set(state.position, value),
+            set(state.frameTime, 0),
+            set(config.toValue, dest),
+            startClock(clock)
+        ]),
+        timing(clock, state, config),
+        cond(state.finished, debug('stop clock', stopClock(clock))),
+        state.position
+    ]);
+}
 
 export default class Login extends Component {
 
 
-    
+
     constructor(props) {
         super(props)
         this.state = {
-          login : '',
-          password : '',
-          error : false,
-          messageError : "",
-          modalVisible: false,
-          showToast: false
+            login: '',
         }
 
+        this.buttonOpacity = new Value(1);
+
+        this.onStateChange = event([
+            {
+                nativeEvent: ({ state }) =>
+                    block([
+                        cond(
+                            eq(state, State.END),
+                            set(this.buttonOpacity, runTiming(new Clock(), 1, 0))
+                        )
+                    ])
+            }
+        ]);
+
+        this.onCloseState = event([
+            {
+                nativeEvent: ({ state }) =>
+                    block([
+                        cond(
+                            eq(state, State.END),
+                            set(this.buttonOpacity, runTiming(new Clock(), 0, 1))
+                        )
+                    ])
+            }
+        ]);
+
+        this.buttonY = interpolate(this.buttonOpacity, {
+            inputRange: [0, 1],
+            outputRange: [100, 0],
+            extrapolate: Extrapolate.CLAMP
+        });
+
+        this.bgY = interpolate(this.buttonOpacity, {
+            inputRange: [0, 1],
+            outputRange: [-height / 3 -50, 0],
+            extrapolate: Extrapolate.CLAMP
+        });
+
+        this.textInputZindex = interpolate(this.buttonOpacity, {
+            inputRange: [0, 1],
+            outputRange: [1, -1],
+            extrapolate: Extrapolate.CLAMP
+        });
+
+        this.textInputY = interpolate(this.buttonOpacity, {
+            inputRange: [0, 1],
+            outputRange: [0, 100],
+            extrapolate: Extrapolate.CLAMP
+        });
+
+        this.textInputOpacity = interpolate(this.buttonOpacity, {
+            inputRange: [0, 1],
+            outputRange: [1, 0],
+            extrapolate: Extrapolate.CLAMP
+        });
+
+        this.rotateCross = interpolate(this.buttonOpacity, {
+            inputRange: [0, 1],
+            outputRange: [180, 360],
+            extrapolate: Extrapolate.CLAMP
+        });
     }
-
-    _login = () => {
-
-        alert("login");
-        console.log("login")
-    }
-
 
     render() {
 
         return (
             <Root>
                 <Container style={styles.container}>
-                    <StatusBar backgroundColor="#334c66" barStyle="light-content" />
+                    <StatusBar hidden backgroundColor="#334c66" barStyle="light-content" />
+
+                    <Animated.View style={{ ...StyleSheet.absoluteFill, transform: [{ translateY: this.bgY }] }}>
+                        <Svg height={height + 50} width={width}>
+                            <ClipPath id="clip">
+                                <Circle r={height+50} cx={width / 2} />
+                            </ClipPath>
+
+                            <Image
+                                href={require('../Images/money.jpg')}
+                                width={width}
+                                height={height + 50}
+                                preserveAspectRatio="xMidYMid slice"
+                                clipPath="url(#clip)"
+                            />
+                        </Svg>
+                    </Animated.View>
 
 
-                    <Modal
-                        style={{flex : 1, justifyContent : 'center', alignItems : 'center'}}
-                        animationType="fade"
-                        transparent={false}
-                        visible={this.state.modalVisible}
-                        onRequestClose={() => {
-                                    Alert.alert('Modal has been closed.');
+                    <View style={{ height: height / 3, paddingHorizontal: 20 }}>
+                        <TapGestureHandler onHandlerStateChange={this.onStateChange}>
+                            <Animated.View style={{ ...styles.button, opacity: this.buttonOpacity, transform: [{ translateY: this.buttonY }] }}>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>SE CONNECTER</Text>
+                            </Animated.View>
+                        </TapGestureHandler>
+
+                        <TapGestureHandler>
+                            <Animated.View style={{ ...styles.button, backgroundColor: '#db2c6f', opacity: this.buttonOpacity, transform: [{ translateY: this.buttonY }] }}>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>ACCEDER AU FORUM</Text>
+                            </Animated.View>
+                        </TapGestureHandler>
+
+                        <Animated.View style={{
+                            ...StyleSheet.absoluteFill, height: height / 3, top: null, justifyContent: 'center', padding: 20,
+                            zIndex: this.textInputZindex,
+                            opacity: this.textInputOpacity,
+                            transform: [{ translateY: this.textInputY }]
                         }}>
-                        <View style={{flex : 1, justifyContent : 'center', alignItems : 'center'}} >
-                            
-                                <Spinner color='green' size ={60} />
-                                <Text style={{textAlign : 'center'}}>Connexion en cours...</Text>
-                                
-                        </View>
-                    </Modal>
 
+                            <TapGestureHandler onHandlerStateChange={this.onCloseState}>
+                                <Animated.View style={styles.closeBtn}>
+                                    <Animated.Text style={{ fontSize: 20, transform: [{ rotate: concat(this.rotateCross, 'deg') }] }}>X</Animated.Text>
+                                </Animated.View>
+                            </TapGestureHandler>
 
-                    <View style={styles.header_content}>
-                        <Icon name='ios-person' style={{fontSize : 70, color : '#FFF'}} />
-                        <Text style={{color : '#FFF', fontSize : 20}}>Connectez-vous</Text>
-                    </View>
+                            <Item style={styles.textInput} rounded>
+                                <Icon style={{ fontSize: 20 }} active name='ios-person' />
+                                <Input placeholder='Téléphone' />
+                            </Item>
 
-                    <View style={styles.form_content}>
-                        
-                        <Content style={{width : '90%', marginTop : 20}}>
-                            <Form>
-                                <Item regular style={styles.item_input}>
-                                    <Icon active name='ios-person' style={{fontSize : 20}} />
-                                    <Input placeholder="Votre login" onChangeText={login => this.setState({login})} />
-                                </Item>
-                                <Item regular style={styles.item_input}>
-                                    <Icon active name='ios-lock-closed' style={{fontSize : 20}} />
-                                    <Input placeholder="Votre mot de passe" secureTextEntry={true} onChangeText={password => this.setState({password})} />
-                                </Item>
-                                <Button rounded info block style={{marginTop : 20, backgroundColor : "#309c5f"}}  onPress={() => this._login()} >
-                                    <Icon name='ios-lock-closed' style={{fontSize : 20, color : "#ffffff"}} />
-                                    <Text uppercase={false} style={{fontSize : 16}}>Se connecter</Text>
-                                </Button>
-                            </Form>
+                            <Item style={styles.textInput} rounded>
+                                <Icon style={{ fontSize: 20 }} active name='ios-lock-closed' />
+                                <Input placeholder='Mot de passe' />
+                            </Item>
 
+                            <Animated.View style={{ ...styles.button, ...styles.textInput }}>
+                                <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SE CONNECTER</Text>
+                            </Animated.View>
 
-                        </Content>
+                        </Animated.View>
+
                     </View>
                 </Container>
             </Root>
@@ -88,31 +204,46 @@ export default class Login extends Component {
 
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
         flex: 1,
-        backgroundColor: '#263a5c',
+        backgroundColor: '#fff',
+        justifyContent: 'flex-end'
+    },
+    button: {
+        backgroundColor: 'white',
+        height: 60,
+        marginBottom: 15,
+        borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
-  },
-  header_content : {
-        flex : 3,
-        justifyContent: 'center',
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 5,
+    },
+    closeBtn: {
+        height: 40,
+        width: 40,
+        backgroundColor: 'white',
+        borderRadius: 20,
         alignItems: 'center',
-        backgroundColor: '#263a5c',
-    
-  },
-  form_content : {
-        flex : 8,
-        backgroundColor: '#FFFFFF',
-        width : '100%',
         justifyContent: 'center',
-        alignItems: 'center',
-  },
-  item_input:{
-    borderRadius : 4, 
-    backgroundColor : '#efefef', 
-    marginTop : 20,
-    paddingLeft : 15,
-    fontSize : 11
-  }
+        position: 'absolute',
+        top: -20,
+        left: width / 2 - 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    textInput: {
+        paddingHorizontal: 18,
+        marginTop: 15,
+        height: 50
+    }
+
 });

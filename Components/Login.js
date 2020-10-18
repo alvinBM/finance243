@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Animated, { Easing } from 'react-native-reanimated';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import Svg, { Image, Circle, ClipPath } from 'react-native-svg';
+import { connect } from 'react-redux'
+
 
 const { height, width } = Dimensions.get('window');
 
@@ -56,7 +58,7 @@ function runTiming(clock, value, dest) {
     ]);
 }
 
-export default class Login extends Component {
+class Login extends Component {
 
 
 
@@ -100,7 +102,7 @@ export default class Login extends Component {
 
         this.bgY = interpolate(this.buttonOpacity, {
             inputRange: [0, 1],
-            outputRange: [-height / 3 -50, 0],
+            outputRange: [-height / 3 - 50, 0],
             extrapolate: Extrapolate.CLAMP
         });
 
@@ -129,8 +131,27 @@ export default class Login extends Component {
         });
     }
 
-    render() {
 
+    _login() {
+        //On ajoute les donnees de l'utilisateur dans le state principal (REDUX)
+        let user = {
+            "fullname" : "Alvin bauma 2",
+            "phone" : "+243995502981",
+            "password" : "123456",
+            "email" : "alvinbauma@gmail.com"
+        }
+        const action1 = { type: "SET_USER_DATA", value: user }
+        const action2 = { type: "SET_CONNECTION", value: true }
+        this.props.dispatch(action1)
+        this.props.dispatch(action2)
+    }
+
+    _homePage() {
+        this.props.navigation.navigate('Home')
+    }
+
+    render() {
+        
         return (
             <Root>
                 <Container style={styles.container}>
@@ -139,8 +160,12 @@ export default class Login extends Component {
                     <Animated.View style={{ ...StyleSheet.absoluteFill, transform: [{ translateY: this.bgY }] }}>
                         <Svg height={height + 50} width={width}>
                             <ClipPath id="clip">
-                                <Circle r={height+50} cx={width / 2} />
+                                <Circle r={height + 50} cx={width / 2} />
                             </ClipPath>
+                            
+                            <View style={{justifyContent : 'center', alignItems : 'center', height : height}}>
+                                <Text style={{...styles.textBienvenue, color : 'white', fontSize : 30, fontWeight : 'bold'}}>Bienvenue sur finance243</Text>
+                            </View>
 
                             <Image
                                 href={require('../Images/money.jpg')}
@@ -160,7 +185,7 @@ export default class Login extends Component {
                             </Animated.View>
                         </TapGestureHandler>
 
-                        <TapGestureHandler>
+                        <TapGestureHandler onHandlerStateChange={() => this._homePage()}>
                             <Animated.View style={{ ...styles.button, backgroundColor: '#db2c6f', opacity: this.buttonOpacity, transform: [{ translateY: this.buttonY }] }}>
                                 <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>ACCEDER AU FORUM</Text>
                             </Animated.View>
@@ -189,9 +214,9 @@ export default class Login extends Component {
                                 <Input placeholder='Mot de passe' />
                             </Item>
 
-                            <Animated.View style={{ ...styles.button, ...styles.textInput }}>
+                            <Button onPress={() => this._login()} style={{ ...styles.button, ...styles.textInput, width : "100%" }}>
                                 <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SE CONNECTER</Text>
-                            </Animated.View>
+                            </Button>
 
                         </Animated.View>
 
@@ -244,6 +269,23 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
         marginTop: 15,
         height: 50
+    },
+    textBienvenue : {
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 5,
     }
 
 });
+
+
+//connecter le state de notre application au component AddCustomer
+const mapStateToProps = (state) => {
+    return {
+        user_data: state.account.user_data,
+        user_connected: state.account.user_connected
+    }
+}
+
+export default connect(mapStateToProps)(Login)

@@ -1,3 +1,7 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable semi */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Modal, AsyncStorage, FlatList } from 'react-native';

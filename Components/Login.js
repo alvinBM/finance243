@@ -1,3 +1,8 @@
+/* eslint-disable semi */
+/* eslint-disable quotes */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable comma-dangle */
+/* eslint-disable prettier/prettier */
 
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Dimensions, AsyncStorage, TextInput } from 'react-native';
@@ -150,6 +155,10 @@ class Login extends Component {
         this.props.navigation.navigate('Home')
     }
 
+    _signupPage() {
+        this.props.navigation.navigate('SignUp')
+    }
+
     render() {
         
         return (
@@ -185,9 +194,9 @@ class Login extends Component {
                             </Animated.View>
                         </TapGestureHandler>
 
-                        <TapGestureHandler onHandlerStateChange={() => this._homePage()}>
+                        <TapGestureHandler onHandlerStateChange={() => this._signupPage()}>
                             <Animated.View style={{ ...styles.button, backgroundColor: '#db2c6f', opacity: this.buttonOpacity, transform: [{ translateY: this.buttonY }] }}>
-                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>ACCEDER AU FORUM</Text>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>CREER UN COMPTE</Text>
                             </Animated.View>
                         </TapGestureHandler>
 
@@ -214,7 +223,7 @@ class Login extends Component {
                                 <Input placeholder='Mot de passe' />
                             </Item>
 
-                            <Button onPress={() => this._login()} style={{ ...styles.button, ...styles.textInput, width : "100%" }}>
+                            <Button onPress={() => this._homePage()} style={{ ...styles.button, ...styles.textInput, width : "100%" }}>
                                 <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SE CONNECTER</Text>
                             </Button>
 

@@ -41,7 +41,7 @@ class Create extends Component {
                     <StatusBar backgroundColor="#334c66" barStyle="light-content" />
                     <Text>Create page</Text>
                     <Button onPress={() => this._catPage()}><Text>Got to create categorie</Text></Button>
-                    <Button onPress={() => this._catPage()}><Text>Got to create categorie</Text></Button>
+                    <Button onPress={() => this._walletPage()}><Text>Got to create wallet</Text></Button>
 
                 </Container>
             </Root>

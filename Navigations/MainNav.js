@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable semi */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
@@ -64,12 +65,13 @@ function MainNav(params) {
             />
 
             <Tabs.Screen name="CreateStackScreen" component={CreateStackScreen}
-              options={{
+              options={navigation => ({
                 tabBarLabel: '',
                 tabBarIcon: ({ color }) => (
                   <Icon name="ios-add-circle" color={color} size={70} style={{ marginTop: 0 }} />
                 ),
-              }}
+                tabBarVisible: true,
+              })}
             />
 
             <Tabs.Screen name="Forum" component={Forum}

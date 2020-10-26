@@ -39,14 +39,13 @@ class Home extends Component {
 
         const user = {
             id: Math.floor(Date.now()),
-            fullname: "Hermas baseilwango",
+            fullname: "Alvin bauma ",
             created: new Date(),
             modified: new Date(),
             activated: "1",
             phone: "+243998883773",
             email: "hemrnas@gmail.com",
-            password: "123456",
-            wallets: []
+            password: "123456"
         }
 
         creatUser(user).then((res) => {
@@ -58,6 +57,26 @@ class Home extends Component {
 
     }
 
+    supprimerUser = (userId) => {
+        
+        deleteUser(userId).then(res => {
+            alert("User " + userId + " suprime");
+        }).catch(error => {
+            alert("erruer suppression user")
+            console.log("Erreur lors supprion user", error);
+        })
+    }
+
+    selectAnUser(userId) {
+        getUser(userId).then(res => {
+            alert("cool user getted")
+            console.log("User getted", res);
+        }).catch(error => {
+            alert("erreur user getted")
+            console.log("Erruer getting user", error);
+        })
+    }
+
 
     render() {
         //console.log("User in store", this.props)
@@ -65,22 +84,31 @@ class Home extends Component {
             <Root>
                 <Container style={styles.container}>
                     <StatusBar backgroundColor="#334c66" barStyle="light-content" />
-                    <Text>Liste des utilisateurs</Text>
+                    <Content>
+                        <Text>Liste des utilisateurs</Text>
 
-                    <Button onPress={() => this.creerUser()} style={{ ...styles.button, width: "100%" }}>
-                        <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>CREER USER</Text>
-                    </Button>
+                        <Button onPress={() => this.creerUser()} style={{ ...styles.button, width: "100%" }}>
+                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>CREER USER</Text>
+                        </Button>
 
-                    <View style={{width : '100%', padding : 10}}>
-                        {this.state.users.map(user => {
-                            return (
-                                <View style={{borderBottomColor : 'black', borderBottomWidth : 1}} key={user.id}>
-                                    <Text style={{ fontWeight: "bold" }}>{user.fullname} </Text>
-                                    <Text note style={{ marginTop: 5 }}>{user.email}</Text>
-                                </View>
-                            )
-                        })}
-                    </View>
+                        <View style={{ width: '100%', padding: 10 }}>
+                            {this.state.users.map(user => {
+                                return (
+                                    <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} key={user.id}>
+                                        <Text style={{ fontWeight: "bold" }}>{user.fullname} </Text>
+                                        <Text note style={{ marginTop: 5 }}>{user.email}</Text>
+                                    </View>
+                                )
+                            })}
+                        </View>
+                        <Button onPress={() => this.supprimerUser(1603726771890)} style={{ ...styles.button, width: "100%" }}>
+                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SUUPRIMER USER</Text>
+                        </Button>
+
+                        <Button onPress={() => this.selectAnUser(1603726771890)} style={{ ...styles.button, width: "100%" }}>
+                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SUUPRIMER USER</Text>
+                        </Button>
+                    </Content>
 
                 </Container>
             </Root>
@@ -93,8 +121,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     button: {
         backgroundColor: 'white',

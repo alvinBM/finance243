@@ -42,7 +42,7 @@ function MainNav(params) {
           <Tabs.Navigator
             initialRouteName="Dashboard"
             tabBarOptions={{
-              activeTintColor: '#e91e63',
+              activeTintColor: '#db2c6f',
               inactiveTintColor: 'gray',
               style: {
                 backgroundColor: 'white',

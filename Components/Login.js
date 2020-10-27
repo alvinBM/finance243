@@ -71,6 +71,7 @@ class Login extends Component {
         super(props)
         this.state = {
             login: '',
+            password: ''
         }
 
         this.buttonOpacity = new Value(1);
@@ -140,15 +141,22 @@ class Login extends Component {
     _login() {
         //On ajoute les donnees de l'utilisateur dans le state principal (REDUX)
         let user = {
-            "fullname" : "Alvin bauma 2",
-            "phone" : "+243995502981",
-            "password" : "123456",
-            "email" : "alvinbauma@gmail.com"
+            "fullname": "Alvin bauma 2",
+            "phone": "+243995502981",
+            "password": "123456",
+            "email": "alvinbauma@gmail.com"
         }
-        const action1 = { type: "SET_USER_DATA", value: user }
-        const action2 = { type: "SET_CONNECTION", value: true }
-        this.props.dispatch(action1)
-        this.props.dispatch(action2)
+
+        if (this.state.login == '0995502981' && this.state.password == '123456') {
+            const action1 = { type: "SET_USER_DATA", value: user }
+            const action2 = { type: "SET_CONNECTION", value: true }
+            this.props.dispatch(action1)
+            this.props.dispatch(action2)
+        } else {
+            alert("Login incorrect")
+        }
+
+
     }
 
     _homePage() {
@@ -160,7 +168,7 @@ class Login extends Component {
     }
 
     render() {
-        
+
         return (
             <Root>
                 <Container style={styles.container}>
@@ -171,9 +179,9 @@ class Login extends Component {
                             <ClipPath id="clip">
                                 <Circle r={height + 50} cx={width / 2} />
                             </ClipPath>
-                            
-                            <View style={{justifyContent : 'center', alignItems : 'center', height : height}}>
-                                <Text style={{...styles.textBienvenue, color : 'white', fontSize : 30, fontWeight : 'bold'}}>Bienvenue sur finance243</Text>
+
+                            <View style={{ justifyContent: 'center', alignItems: 'center', height: height }}>
+                                <Text style={{ ...styles.textBienvenue, color: 'white', fontSize: 30, fontWeight: 'bold' }}>Bienvenue sur finance243</Text>
                             </View>
 
                             <Image
@@ -215,15 +223,15 @@ class Login extends Component {
 
                             <Item style={styles.textInput} rounded>
                                 <Icon style={{ fontSize: 20 }} active name='ios-person' />
-                                <Input placeholder='Téléphone' />
+                                <Input placeholder='Téléphone' onChangeText={login => this.setState({ login })} />
                             </Item>
 
                             <Item style={styles.textInput} rounded>
                                 <Icon style={{ fontSize: 20 }} active name='ios-lock-closed' />
-                                <Input placeholder='Mot de passe' />
+                                <Input placeholder='Mot de passe' onChangeText={password => this.setState({ password })} />
                             </Item>
 
-                            <Button onPress={() => this._homePage()} style={{ ...styles.button, ...styles.textInput, width : "100%" }}>
+                            <Button onPress={() => this._login()} style={{ ...styles.button, ...styles.textInput, width: "100%" }}>
                                 <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SE CONNECTER</Text>
                             </Button>
 
@@ -279,7 +287,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         height: 50
     },
-    textBienvenue : {
+    textBienvenue: {
         shadowOffset: { width: 2, height: 2 },
         shadowColor: 'black',
         shadowOpacity: 0.2,

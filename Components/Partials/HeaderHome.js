@@ -27,15 +27,15 @@ export default class HeaderHome extends Component {
             <Header style={styles.header}>
                 <StatusBar backgroundColor="#db2c6f" barStyle="light-content" />
                 <Left>
-                    <Button transparent style={{ marginRight: -13 }} onPress={this.handlePress.bind(this)}>
-                        <Icon name='ios-menu' size={30} style={{ color: "#db2c6f" }} />
+                    <Button transparent style={{ marginRight: -10 }} onPress={this.handlePress.bind(this)}>
+                        <Icon name='ios-menu' size={30} style={{ color: "#424242" }} />
                     </Button>
                 </Left>
                 <Body>
                     <Text style={styles.title}>{this.props.title}</Text>
                 </Body>
                 <Right>
-                    <Icon name='ios-person-circle' size={40} style={{ color: "#db2c6f" }} />
+                    <Icon name='ios-person-circle' size={35} style={{ color: "#424242", marginRight : 5 }} />
                 </Right>
             </Header>
         );
@@ -46,7 +46,7 @@ export default class HeaderHome extends Component {
 
 const styles = StyleSheet.create({
     title: {
-        color: '#db2c6f',
+        color: '#424242',
         fontSize: 23,
         marginLeft: 0,
         fontWeight: 'bold'

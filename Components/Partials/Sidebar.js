@@ -12,6 +12,7 @@ import { Container, Text, Content, Button, ListItem, Left, Body, Right, Switch, 
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { connect } from 'react-redux'
+import { FlatList } from 'react-native-gesture-handler';
 
 
 class Sidebar extends Component {
@@ -53,7 +54,6 @@ class Sidebar extends Component {
                         <Content style={{width : '100%', padding : 0, marginTop : 10}}>
 
                             <Text style={{color : "#6b6b6b", padding : 15}}>Point de vente (POS)</Text>
-                            
 
                         </Content>
                     </View>

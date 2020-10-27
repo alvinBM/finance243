@@ -4,7 +4,7 @@
 /* eslint-disable prettier/prettier */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Modal, FlatList, TouchableOpacity, TouchableHighlightBase } from 'react-native';
+import { StyleSheet, View, StatusBar, Modal, FlatList, TouchableOpacity, TouchableHighlightBase, Dimensions } from 'react-native';
 import { Container, Text, Content, Form, Item, Input, Spinner, Toast, Root, Button, List, ListItem, Left, Body, Right, Drawer } from 'native-base'
 import Icon from 'react-native-vector-icons/Ionicons'
 import HeaderHome from './Partials/HeaderHome'
@@ -14,6 +14,16 @@ import { connect } from 'react-redux'
 import realm, { creatUser, updateUser, deleteUser, getUser, getUsers, getWallets } from "../databases/schemas"
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
+import { BarChart, LineChart } from "react-native-chart-kit";
+
+const data = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+        {
+            data: [20, 45, 28, 80, 99, 43]
+        }
+    ]
+};
 
 class Home extends Component {
 
@@ -112,13 +122,13 @@ class Home extends Component {
                     <HeaderHome onPress={this.openDrawer.bind(this)} title={"Finance243"} />
                     <Content>
 
-                        <View style={{padding : 16, flexDirection : "row", justifyContent : 'space-between', alignItems : 'center', marginTop : 10}}>
-                            <Text style={{fontSize : 20, fontWeight : '700', color : '#424242'}}>Mes portefeuilles actifs</Text>
-                            <Text style={{fontSize : 17, color : '#db2c6f'}}>Voir tous</Text>
+                        <View style={{ padding: 16, flexDirection: "row", justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+                            <Text style={{ fontSize: 20, fontWeight: '700', color: '#424242' }}>Mes portefeuilles actifs</Text>
+                            <Text style={{ fontSize: 17, color: '#db2c6f' }}>Voir tous</Text>
                         </View>
 
                         <FlatList
-                            style={{paddingLeft : 5}}
+                            style={{ paddingLeft: 5 }}
                             horizontal={true}
                             scrollIndicatorInsets={false}
                             data={this.state.wallets}
@@ -128,39 +138,68 @@ class Home extends Component {
                                 return (
                                     <TouchableHighlight>
                                         <View style={{ ...styles.card_wallet }}>
-                                            <Text style={{...styles.flex1, fontSize : 16}}>{item.name}</Text>
-                                            <Icon name='ios-wallet-outline' size={35} color={item.color} style={{ ...styles.flex1, marginRight : 5 }} />
-                                            <Text style={{...styles.flex1, fontSize : 20, fontWeight : '700'}}>{item.amount.toFixed(2)} {item.currency}</Text>
+                                            <Text style={{ ...styles.flex1, fontSize: 16 }}>{item.name}</Text>
+                                            <Icon name='ios-wallet-outline' size={35} color={item.color} style={{ ...styles.flex1, marginRight: 5 }} />
+                                            <Text style={{ ...styles.flex1, fontSize: 20, fontWeight: '700' }}>{item.amount.toFixed(2)} {item.currency}</Text>
                                         </View>
                                     </TouchableHighlight>
                                 )
                             }}
                         />
 
+                        <View style={{ flex: 1, padding: 10 }}>
 
-                        {/* 
+                            <View style={{ ...styles.card_graphic }}>
+                                <LineChart
+                                    data={{
+                                        labels: ["January", "February", "March", "April", "May", "June", "April", "May", "June"],
+                                        datasets: [
+                                            {
+                                                data: [
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100
+                                                ]
+                                            }
+                                        ]
+                                    }}
+                                    width={Dimensions.get("window").width} // from react-native
+                                    height={220}
+                                    yAxisLabel="$"
+                                    yAxisSuffix="k"
+                                    yAxisInterval={1} // optional, defaults to 1
+                                    chartConfig={{
+                                        backgroundColor: "#e82a69",
+                                        backgroundGradientFrom: "#d91a59",
+                                        backgroundGradientTo: "#e05a86",
+                                        decimalPlaces: 2, // optional, defaults to 2dp
+                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        style: {
+                                            borderRadius: 16
+                                        },
+                                        propsForDots: {
+                                            r: "6",
+                                            strokeWidth: "2",
+                                            stroke: "#e05a86"
+                                        }
+                                    }}
+                                    bezier
+                                    style={{
+                                        marginVertical: 8,
+                                        borderRadius: 16
+                                    }}
+                                />
+                            </View>
 
-                        <Button onPress={() => this.creerUser()} style={{ ...styles.button, width: "100%" }}>
-                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>CREER USER</Text>
-                        </Button>
-
-                        <View style={{ width: '100%', padding: 10 }}>
-                            {this.state.users.map(user => {
-                                return (
-                                    <View style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} key={user.id}>
-                                        <Text style={{ fontWeight: "bold" }}>{user.fullname} </Text>
-                                        <Text note style={{ marginTop: 5 }}>{user.email}</Text>
-                                    </View>
-                                )
-                            })}
                         </View>
-                        <Button onPress={() => this.supprimerUser(1603726771890)} style={{ ...styles.button, width: "100%" }}>
-                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SUUPRIMER USER</Text>
-                        </Button>
 
-                        <Button onPress={() => this.selectAnUser(1603726771890)} style={{ ...styles.button, width: "100%" }}>
-                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SUUPRIMER USER</Text>
-                        </Button> */}
                     </Content>
 
                 </Container>
@@ -175,10 +214,10 @@ class Home extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#fff'
     },
-    flex1 : {
-        flex : 1
+    flex1: {
+        flex: 1
     },
     button: {
         backgroundColor: 'white',
@@ -203,8 +242,22 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOpacity: 0.1,
         elevation: 2,
-        justifyContent : 'center',
-        alignItems : 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    card_graphic: {
+        flex: 1,
+        backgroundColor: '#fcfcfc',
+        width: '100%',
+        height: 250,
+        padding: 10,
+        borderRadius: 10,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.1,
+        elevation: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 
 });

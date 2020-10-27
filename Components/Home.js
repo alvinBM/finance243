@@ -4,9 +4,12 @@
 /* eslint-disable prettier/prettier */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Modal, AsyncStorage, FlatList } from 'react-native';
-import { Container, Text, Content, Form, Item, Input, Spinner, Toast, Root, Button, List, ListItem, Left, Body, Right } from 'native-base'
+import { StyleSheet, View, StatusBar, Modal, FlatList } from 'react-native';
+import { Container, Text, Content, Form, Item, Input, Spinner, Toast, Root, Button, List, ListItem, Left, Body, Right, Drawer } from 'native-base'
 import Icon from 'react-native-vector-icons/Ionicons'
+import HeaderHome from './Partials/HeaderHome'
+import Sidebar from './Partials/Sidebar'
+
 import { connect } from 'react-redux'
 import realm, { creatUser, updateUser, deleteUser, getUser, getUsers } from "../databases/schemas"
 
@@ -24,6 +27,16 @@ class Home extends Component {
 
     componentDidMount() {
         this.reloadDataUsers();
+    }
+
+
+    closeDrawer = () => {
+        this._drawer._root.close();
+    }
+
+
+    openDrawer = () => {
+        this._drawer._root.open();
     }
 
     reloadDataUsers = () => {
@@ -58,7 +71,7 @@ class Home extends Component {
     }
 
     supprimerUser = (userId) => {
-        
+
         deleteUser(userId).then(res => {
             alert("User " + userId + " suprime");
         }).catch(error => {
@@ -81,11 +94,17 @@ class Home extends Component {
     render() {
         //console.log("User in store", this.props)
         return (
-            <Root>
-                <Container style={styles.container}>
-                    <StatusBar backgroundColor="#334c66" barStyle="light-content" />
-                    <Content>
+
+            <Drawer
+                ref={(ref) => { this._drawer = ref; }}
+                content={<Sidebar closeDrawer={this.closeDrawer.bind(this)} navigation={this.props.navigation} />} >
+                    <Container style={styles.container}>
+                        <HeaderHome onPress={this.openDrawer.bind(this)} title={"Finance243"} />
+                        <Content>
                         <Text>Liste des utilisateurs</Text>
+
+
+                            {/* 
 
                         <Button onPress={() => this.creerUser()} style={{ ...styles.button, width: "100%" }}>
                             <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>CREER USER</Text>
@@ -107,11 +126,13 @@ class Home extends Component {
 
                         <Button onPress={() => this.selectAnUser(1603726771890)} style={{ ...styles.button, width: "100%" }}>
                             <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>SUUPRIMER USER</Text>
-                        </Button>
-                    </Content>
+                        </Button> */}
+                        </Content>
 
-                </Container>
-            </Root>
+                    </Container>
+                
+            </Drawer>
+
         );
     }
 }

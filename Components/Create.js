@@ -38,10 +38,11 @@ class Create extends Component {
         return (
             <Root>
                 <Container style={styles.container}>
-                    <StatusBar backgroundColor="#334c66" barStyle="light-content" />
-                    <Text>Create page</Text>
-                    <Button onPress={() => this._catPage()}><Text>Got to create categorie</Text></Button>
-                    <Button onPress={() => this._walletPage()}><Text>Got to create wallet</Text></Button>
+                    <StatusBar backgroundColor="#db2c6f" barStyle="light-content" />
+                    
+
+                    <Button style={{...styles.button, backgroundColor : '#334c66'}} onPress={() => this._catPage()}><Text>Recharge your account</Text></Button>
+                    <Button style={{...styles.button, backgroundColor : '#1b8023'}} onPress={() => this._walletPage()}><Text>Transfer money</Text></Button>
 
                 </Container>
             </Root>
@@ -56,7 +57,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+        padding : 20
+    },
+    button: {
+        backgroundColor: 'white',
+        height: 60,
+        marginBottom: 15,
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 5,
+        width : '100%'
+    },
 
 });
 

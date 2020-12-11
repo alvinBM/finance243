@@ -181,7 +181,7 @@ class Login extends Component {
                             </ClipPath>
 
                             <View style={{ justifyContent: 'center', alignItems: 'center', height: height }}>
-                                <Text style={{ ...styles.textBienvenue, color: 'white', fontSize: 30, fontWeight: 'bold' }}>Bienvenue sur finance243</Text>
+                                <Text style={{ ...styles.textBienvenue, color: 'white', fontSize: 30, fontWeight: 'bold' }}>Welcome to MoneyTrans</Text>
                             </View>
 
                             <Image

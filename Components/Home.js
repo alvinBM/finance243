@@ -32,12 +32,16 @@ class Home extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            wallets: []
+            wallets: [
+                {id : 1, name : "Principal", amount : 2309, currency : "USD", color : "#136fbf"},
+                {id : 2, name : "Economie", amount : 873, currency : "USD", color : "#1b8023"},
+                {id : 3, name : "Education", amount : 134.9, currency : "USD", color : "#c75412"}
+            ]
         }
     }
 
     componentDidMount() {
-        this.reloadDataWallets();
+        //this.reloadDataWallets();
     }
 
 
@@ -119,12 +123,12 @@ class Home extends Component {
                 ref={(ref) => { this._drawer = ref; }}
                 content={<Sidebar closeDrawer={this.closeDrawer.bind(this)} navigation={this.props.navigation} />} >
                 <Container style={styles.container}>
-                    <HeaderHome onPress={this.openDrawer.bind(this)} title={"Finance243"} />
+                    <HeaderHome onPress={this.openDrawer.bind(this)} title={"Money Transfer"} />
                     <Content>
 
                         <View style={{ padding: 16, flexDirection: "row", justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
-                            <Text style={{ fontSize: 20, fontWeight: '700', color: '#424242' }}>Mes portefeuilles actifs</Text>
-                            <Text style={{ fontSize: 17, color: '#db2c6f' }}>Voir tous</Text>
+                            <Text style={{ fontSize: 20, fontWeight: '700', color: '#424242' }}>My eWallets</Text>
+                            <Text style={{ fontSize: 17, color: '#db2c6f' }}>All</Text>
                         </View>
 
                         <FlatList
@@ -150,52 +154,7 @@ class Home extends Component {
                         <View style={{ flex: 1, padding: 10 }}>
 
                             <View style={{ ...styles.card_graphic }}>
-                                <LineChart
-                                    data={{
-                                        labels: ["January", "February", "March", "April", "May", "June", "April", "May", "June"],
-                                        datasets: [
-                                            {
-                                                data: [
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100
-                                                ]
-                                            }
-                                        ]
-                                    }}
-                                    width={Dimensions.get("window").width} // from react-native
-                                    height={220}
-                                    yAxisLabel="$"
-                                    yAxisSuffix="k"
-                                    yAxisInterval={1} // optional, defaults to 1
-                                    chartConfig={{
-                                        backgroundColor: "#e82a69",
-                                        backgroundGradientFrom: "#d91a59",
-                                        backgroundGradientTo: "#e05a86",
-                                        decimalPlaces: 2, // optional, defaults to 2dp
-                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                        style: {
-                                            borderRadius: 16
-                                        },
-                                        propsForDots: {
-                                            r: "6",
-                                            strokeWidth: "2",
-                                            stroke: "#e05a86"
-                                        }
-                                    }}
-                                    bezier
-                                    style={{
-                                        marginVertical: 8,
-                                        borderRadius: 16
-                                    }}
-                                />
+                                <Text>Something here...</Text>
                             </View>
 
                         </View>

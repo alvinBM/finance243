@@ -25,9 +25,15 @@ const Tabs = createBottomTabNavigator();
 const CreateStackScreen = () => {
   return (
     <CreateStack.Navigator>
-      <CreateStack.Screen name="Create" component={Create} />
-      <CreateStack.Screen name="createWallet" component={CreateWallet} />
-      <CreateStack.Screen name="createCategory" component={CreateCategory} />
+      <CreateStack.Screen name="Create" ptions={{
+        title: "Operation"
+      }} component={Create} />
+      <CreateStack.Screen name="createWallet" options={{
+        title: "Transfer money"
+      }} component={CreateWallet} />
+      <CreateStack.Screen name="createCategory" options={{
+        title: "Recharge account"
+      }} component={CreateCategory} />
     </CreateStack.Navigator>
   )
 }
@@ -76,7 +82,7 @@ function MainNav(params) {
 
             <Tabs.Screen name="Forum" component={Forum}
               options={{
-                tabBarLabel: 'Forum',
+                tabBarLabel: 'Mes transactions',
                 tabBarIcon: ({ color }) => (
                   <Icon name="ios-newspaper" color={color} size={25} />
                 ),

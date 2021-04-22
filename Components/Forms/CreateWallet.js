@@ -43,7 +43,7 @@ class CreateWallet extends Component {
             created: new Date(),
             modified: new Date(),
             activated: "1",
-            user_id : 1603726413767,
+            user_id: 1603726413767,
             name: "Compte AVEC 2",
             description: "Mon compte de test",
             color: "#f5f55f",
@@ -70,9 +70,9 @@ class CreateWallet extends Component {
         return (
             <Root>
                 <Container style={styles.container}>
-                    <StatusBar backgroundColor="#334c66" barStyle="light-content" />
-                    <Content>
-                        <Text>Liste des portefeuilles</Text>
+                    <StatusBar backgroundColor="#db2c6f" barStyle="light-content" />
+
+                    {/* <Text>Liste des portefeuilles</Text>
 
                         <Button onPress={() => this.creatWallet()} style={{ ...styles.button, width: "100%" }}>
                             <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>CREER WALLET</Text>
@@ -88,8 +88,27 @@ class CreateWallet extends Component {
                                     </View>
                                 )
                             })}
-                        </View>
-                    </Content>
+                        </View> */}
+
+
+
+
+
+                    <Item style={styles.textInput} rounded>
+                        <Input keyboardType='numeric' placeholder='Enter the beneficiary ID' onChangeText={login => this.setState({ login })} />
+                    </Item>
+
+                    <Item style={styles.textInput} rounded>
+                        <Input keyboardType='numeric' placeholder='Enter the amount' onChangeText={login => this.setState({ login })} />
+                    </Item>
+
+                    <Item style={styles.textInput} rounded>
+                        <Input placeholder='Reference' onChangeText={login => this.setState({ login })} />
+                    </Item>
+
+                    <Button onPress={() => this._rechargeAccount()} style={{ ...styles.button, ...styles.textInput, width: "100%" }}>
+                        <Text style={{ fontSize: 15, fontWeight: '500', color: '#1c1c1c' }}>TRANSFER MONEY</Text>
+                    </Button>
 
                 </Container>
             </Root>
@@ -102,8 +121,27 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        padding : 16
-    }
+        padding: 16,
+        justifyContent : 'center',
+        alignItems : 'center'
+    },
+    textInput: {
+        paddingHorizontal: 18,
+        marginTop: 15,
+        height: 50
+    },
+    button: {
+        backgroundColor: '#f3f3f3',
+        height: 60,
+        marginBottom: 15,
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        elevation: 5,
+    },
 
 });
 

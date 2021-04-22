@@ -53,7 +53,7 @@ class Sidebar extends Component {
                     <View style={styles.form_content}>
                         <Content style={{width : '100%', padding : 0, marginTop : 10}}>
 
-                            <Text style={{color : "#6b6b6b", padding : 15}}>Point de vente (POS)</Text>
+                            <Text style={{color : "#6b6b6b", padding : 15}}>Something here</Text>
 
                         </Content>
                     </View>
